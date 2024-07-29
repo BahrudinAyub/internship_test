@@ -1,0 +1,30 @@
+{
+  "project_info": {
+    "project_number": "64415760498",
+    "firebase_url": "https://internship-test-8c994-default-rtdb.firebaseio.com",
+    "project_id": "internship-test-8c994",
+    "storage_bucket": "internship-test-8c994.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:64415760498:android:63bfa6bec9fb56b95142eb",
+        "android_client_info": {
+          "package_name": "com.example.internship_test"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyAkbhNokmDKsyI9shcUND6DIebQXNWQxyI"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
