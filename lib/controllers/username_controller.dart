@@ -1,13 +1,15 @@
 import 'package:get/get.dart';
-import 'package:firebase_database/firebase_database.dart';
+import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 
 class UsernameController extends GetxController {
-  final DatabaseReference _databaseReference = FirebaseDatabase.instance.ref().child('Username');
+  final CollectionReference _collectionReference = FirebaseFirestore.instance.collection('Username');
+  final FirebaseAuth _auth = FirebaseAuth.instance;
 
   Future<bool> isUsernameExists(String name) async {
     try {
-      final snapshot = await _databaseReference.orderByChild('name').equalTo(name).once();
-      return snapshot.snapshot.value != null;
+      final querySnapshot = await _collectionReference.where('name', isEqualTo: name).get();
+      return querySnapshot.docs.isNotEmpty;
     } catch (e) {
       print('Failed to check existence of username: $e');
       return false;
@@ -21,19 +23,24 @@ class UsernameController extends GetxController {
         return false; // Username already exists
       }
 
-      // Gets the last unique ID
-      final snapshot = await _databaseReference.orderByKey().limitToLast(1).once();
-      int lastId = 0;
-      if (snapshot.snapshot.value != null) {
-        final lastKey = (snapshot.snapshot.value as Map).keys.first;
-        lastId = int.parse(lastKey);
+      // Get current user ID
+      final userId = _auth.currentUser?.uid;
+      if (userId == null) {
+        print('User is not authenticated');
+        return false;
       }
 
-      // Unique ID next
-      final newId = lastId + 1;
+      // Create a new unique ID
+      final newDocRef = _collectionReference.doc();
+      final newId = newDocRef.id;
 
-      // Menyimpan data ke Realtime Database
-      await _databaseReference.child(newId.toString()).set({'name': name});
+      // Save data to Firestore
+      await newDocRef.set({
+        'name': name,
+        'id': newId,
+        'userId': userId, // Save user ID who added this username
+      });
+
       print('Username added successfully');
       return true; // Successfully added username
     } catch (e) {

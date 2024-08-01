@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:internship_test/colors/colors_app.dart';
 import 'package:internship_test/colors/colors_background.dart';
+import 'package:internship_test/screens/chose_screens.dart';
 import 'package:internship_test/widgets/appbar_icons.dart';
 import 'package:internship_test/widgets/back_button.dart';
 import 'package:internship_test/widgets/username_input_widget.dart';
@@ -27,7 +28,14 @@ class _MainPageScreensState extends State<MainPageScreens> {
       appBar: AppBar(
         leading: Transform.translate(
           offset: const Offset(20.0, 0.0), 
-          child: ArrowBackButton(onPressed: () {}),
+          child: ArrowBackButton(onPressed: () {
+            Navigator.push(
+                      context,
+                      MaterialPageRoute(
+                          builder: (context) =>
+                             const ChoseScreens()), // Navigate to MainPageScreens
+                    );
+          }),
         ),
         backgroundColor: ColorsApp.background1,
         actions: [
